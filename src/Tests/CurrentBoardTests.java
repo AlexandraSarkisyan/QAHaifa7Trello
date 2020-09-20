@@ -89,8 +89,9 @@ public class CurrentBoardTests extends TestBase{
         System.out.println("lists quantity before : "+driver.findElements(By.xpath("//div[@class='list js-list-content']")).size());
         Thread.sleep(20000);
         //open list menu
-        WebElement listMenu= driver.findElement(By.xpath("//a[@class='list-header-extras-menu dark-hover js-open-list-menu icon-sm icon-overflow-menu-horizontal']"));
+        WebElement listMenu= driver.findElement(By.cssSelector("a.list-header-extras-menu"));
         listMenu.click();
+        Thread.sleep(20000);
         //delete list
         WebElement closeButton = driver.findElement(By.xpath("//a[@class='js-close-list']"));
         closeButton.click();
