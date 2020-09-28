@@ -79,7 +79,7 @@ public class LoginTests extends TestBase {
         WebElement passwordField = driver.findElement(By.id("password"));
         passwordField.click();
         passwordField.clear();
-        passwordField.sendKeys("alex");
+        passwordField.sendKeys("password");
         //wait
         waitUntilElementIsClickable(By.id("login-submit"),10);
         WebElement loginButton = driver.findElement(By.id("login-submit"));
@@ -87,6 +87,7 @@ public class LoginTests extends TestBase {
         //wait
         waitUntilElementIsPresent(By.cssSelector("#login-error"),5);
         WebElement errorMessage = driver.findElement(By.cssSelector("#login-error"));
+       // System.out.println("Error message: " + driver.findElement(By.id("login-error")).getText());
         Assert.assertEquals(errorMessage.getTagName(),"div","The tag Name of the error message is not correct");
     }
 
