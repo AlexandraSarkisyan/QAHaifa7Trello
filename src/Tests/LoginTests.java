@@ -1,102 +1,128 @@
 package Tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 //import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class LoginTests extends TestBase {
     @BeforeMethod
-      public void initTests() throws InterruptedException {
+      public void initTests(){
         WebElement logInIcon = driver.findElement(By.xpath("//a[@class='btn btn-sm btn-link text-white']"));
         logInIcon.click();
-        Thread.sleep(10000);
+        waitUntilElementIsClickable(By.id("password"),10);
     }
-    @Test
-    public void loginNegativeTest() throws InterruptedException {
+ @Test
+    public void loginNegativeTest() {
         //Enter empty login and password
+        //wait method
+        waitUntilElementIsClickable(By.id("password"),10);
         WebElement passwordField = driver.findElement(By.id("password"));
         passwordField.click();
         passwordField.clear();
         passwordField.sendKeys("alex613e");
-        Thread.sleep(10000);
+        //wait method
+        waitUntilElementIsClickable(By.id("login"),10);
+        //press login button
         WebElement login = driver.findElement(By.id("login"));
         login.click();
-        Thread.sleep(10000);
-        WebElement errorEmail = driver.findElement(By.xpath("//p[contains(text(),'Missing email')]"));
-        System.out.println("Exception: "+  errorEmail.getText());
+        //wait method
+        waitUntilElementIsPresent(By.id("error"),10);
+        /*WebElement errorEmail = driver.findElement(By.xpath("//p[contains(text(),'Missing email')]"));
+        System.out.println("Exception: "+  errorEmail.getText());*/
+        Assert.assertEquals(driver.findElement(By.id("error")).getText(),"Missing email",
+                "The text of the error message is not correct");
     }
     //se-04
     @Test
     public void passwordLoginNegativeTest() throws InterruptedException {
         // Enter not existent login
+        waitUntilElementIsClickable(By.id("user"),10);
         WebElement emailField = driver.findElement(By.id("user"));
         emailField.click();
         emailField.clear();
         emailField.sendKeys("summer.gmail.com");
         //Enter existent password
+        waitUntilElementIsClickable(By.id("password"),5);
         WebElement passwordField = driver.findElement(By.id("password"));
         passwordField.click();
         passwordField.clear();
         passwordField.sendKeys(PASSWORD);
-        Thread.sleep(10000);
         //Press login button
+        waitUntilElementIsClickable(By.id("login"),10);
         WebElement login = driver.findElement(By.id("login"));
         login.click();
         Thread.sleep(10000);
+        waitUntilElementIsPresent(By.xpath("//div[@id='error']//p[@class='error-message']"),10);
         WebElement errorMessage = driver.findElement(By.xpath("//div[@id='error']//p[@class='error-message']"));
-        System.out.println("Exception: "+  errorMessage.getText());
+        Assert.assertEquals(errorMessage.getText(),"There isn't an account for this username",
+                "The text of the error message is not correct");
     }
     //se-05
     @Test
-    public void passwordNegativeTest() throws InterruptedException {
+    public void passwordNegativeTest() {
         // Enter login field for attlassian
+        waitUntilElementIsClickable(By.id("user"),10);
         WebElement emailField = driver.findElement(By.id("user"));
         emailField.click();
         emailField.clear();
         emailField.sendKeys(LOGIN);
+        //wait
+        waitUntilElementIsClickable(By.xpath("//input[@value='Log in with Atlassian']"),10);
         //Submit login attlassian
         WebElement login = driver.findElement(By.id("login"));
         login.click();
-        Thread.sleep(10000);
+        //wait
+        waitUntilElementIsClickable(By.id("password"),10);
+        //enter Atlassian password
         WebElement passwordField = driver.findElement(By.id("password"));
         passwordField.click();
         passwordField.clear();
-        passwordField.sendKeys(PASSWORD+"1");
-        Thread.sleep(10000);
+        passwordField.sendKeys("alex");
+        //wait
+        waitUntilElementIsClickable(By.id("login-submit"),10);
         WebElement loginButton = driver.findElement(By.id("login-submit"));
         loginButton.click();
-        Thread.sleep(10000);
-        WebElement errorMessage = driver.findElement(By.xpath("//div[@role='alert'][@id='login-error']"));
-        System.out.println("Exception: "+  errorMessage.getText());
+        //wait
+        waitUntilElementIsPresent(By.cssSelector("#login-error"),5);
+        WebElement errorMessage = driver.findElement(By.cssSelector("#login-error"));
+        Assert.assertEquals(errorMessage.getTagName(),"div","The tag Name of the error message is not correct");
     }
 
     @Test
-    public void LoginPositiveTestClasswork() throws InterruptedException {
+    public void LoginPositive (){
         //enter login field
+        //wait method
+        waitUntilElementIsClickable(By.id("user"),10);
         WebElement emailField = driver.findElement(By.id("user"));
         emailField.click();
         emailField.clear();
         emailField.sendKeys(LOGIN);
-        Thread.sleep(3000);
+        //wait method
+        waitUntilElementIsClickable(By.xpath("//input[@value='Log in with Atlassian']"),10);
         // Submit Atlassian  login field
         WebElement loginButton = driver.findElement(By.id("login"));
         loginButton.click();
-        Thread.sleep(10000);
+        //wait method
+        waitUntilElementIsClickable(By.id("password"),10);
         //Enter atlassian password
         WebElement passwordAtlassianField = driver.findElement(By.id("password"));
         passwordAtlassianField.click();
         passwordAtlassianField.clear();
         passwordAtlassianField.sendKeys(PASSWORD);
-        Thread.sleep(20000);
+        //wait method
+        waitUntilElementIsClickable(By.id("login-submit"),10);
         //Submit
         WebElement loginSubmit = driver.findElement(By.id("login-submit"));
         loginSubmit.click();
-        Thread.sleep(65000);
+        //wait method
+        waitUntilElementIsClickable(By.xpath("//button[@data-test-id = 'header-boards-menu-button']"),15);
         //Check our entry
         WebElement boardsButton = driver.findElement(By.xpath("//button[@data-test-id = 'header-boards-menu-button']"));
-        System.out.println("Button name: "+ boardsButton.getText());
+        //System.out.println("Button name: "+ boardsButton.getText());
+        //Assert.assertEquals(boardsButton.getText(),"Boards","The text on the button is not correct");
+        Assert.assertTrue(boardsButton.getText().equals("Boards"),"The text on the button is not 'Boards'");
       }
 
 }
