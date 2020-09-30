@@ -1,5 +1,4 @@
 package Tests;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -66,7 +65,5 @@ public class ProfileAndVisibility extends TestBase{
         waitUntilElementIsClickable(By.xpath("//input[@name='username']"),10);
         WebElement usernameField = driver.findElement(By.xpath("//input[@name='username']"));
         Assert.assertEquals(memberMenu.getAttribute("title"),usernameField.getAttribute("value"),"Username is not correct");
-
-
     }
 }
