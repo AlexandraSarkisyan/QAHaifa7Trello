@@ -64,6 +64,6 @@ public class ProfileAndVisibility extends TestBase{
         WebElement memberMenu = driver.findElement(By.xpath("//button[@aria-label='Open Member Menu']"));
         waitUntilElementIsClickable(By.xpath("//input[@name='username']"),10);
         WebElement usernameField = driver.findElement(By.xpath("//input[@name='username']"));
-        Assert.assertEquals(memberMenu.getAttribute("title"),usernameField.getAttribute("value"),"Username is not correct");
+        Assert.assertEquals(memberMenu.getAttribute("title").substring(15,28),usernameField.getAttribute("value"),"Username is not correct");
     }
 }
