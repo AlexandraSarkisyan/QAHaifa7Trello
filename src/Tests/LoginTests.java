@@ -4,6 +4,7 @@ import Pages.HomePageHelper;
 import Pages.LoginPageHelper;
 import org.openqa.selenium.By;
 //import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -14,9 +15,9 @@ public class LoginTests extends TestBase {
     HomePageHelper homePage;
     @BeforeMethod
       public void initTests(){
-        loginPage= new LoginPageHelper(driver);
-        boardsPage= new BoardsPageHelper(driver);
-        homePage=new HomePageHelper(driver);
+        loginPage= PageFactory.initElements(driver,LoginPageHelper.class);
+        boardsPage= PageFactory.initElements(driver,BoardsPageHelper.class);
+        homePage=PageFactory.initElements(driver,HomePageHelper.class);
         homePage.waitUntilHomePageLoaded();
         homePage.openLoginPage();
         loginPage.waitUntilLoginPageIsLoaded();

@@ -2,6 +2,7 @@ package Pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -17,6 +18,7 @@ public class PageBase {
             e.printStackTrace();
         }
     }
+
     public void waitUntilElementIsPresent(By locator, int time) {
         try {
             new WebDriverWait(driver,time).until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -38,9 +40,37 @@ public class PageBase {
             e.printStackTrace();
         }
     }
+    /*public void waitUntilElementsAreVisible(WebElement element, int time){
+        try {
+            new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOfAllElements(element));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
     public void waitUntilElementIsVisible(By locator, int time) {
         try {
             new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void waitUntilElementIsClickable(WebElement element, int time) {
+        try {
+            new WebDriverWait(driver, time).until(ExpectedConditions.elementToBeClickable(element));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void waitUntilElementIsVisible(WebElement element, int time) {
+        try {
+            new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOf(element));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void waitUntilElementIsInVisible(WebElement element, int time) {
+        try {
+            new WebDriverWait(driver,time).until(ExpectedConditions.invisibilityOf(element));
         } catch (Exception e) {
             e.printStackTrace();
         }

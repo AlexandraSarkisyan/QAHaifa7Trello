@@ -1,8 +1,8 @@
 package Tests;
-import Pages.BoardsPageHelper;
-import Pages.CurrentBoardPageHelper;
-import Pages.HomePageHelper;
-import Pages.LoginPageHelper;
+import Pages.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -12,14 +12,18 @@ public class CurrentBoardTests extends TestBase {
     LoginPageHelper loginPage;
     BoardsPageHelper boardsPage;
     CurrentBoardPageHelper qaHaifa7currentBoard;
+    MenuPageHelper menuPage;
+    ActivityPageHelper activityPage;
 
     @BeforeMethod
     public void initTest() {
         //preferences
-        loginPage= new LoginPageHelper(driver);
-        boardsPage=new BoardsPageHelper(driver);
+        loginPage= PageFactory.initElements(driver,LoginPageHelper.class);
+        boardsPage=PageFactory.initElements(driver,BoardsPageHelper.class);
         qaHaifa7currentBoard = new CurrentBoardPageHelper(driver,"QAHaifa7");
-        homePage =new HomePageHelper(driver);
+        homePage =PageFactory.initElements(driver,HomePageHelper.class);
+        menuPage= PageFactory.initElements(driver, MenuPageHelper.class);
+        activityPage= PageFactory.initElements(driver,ActivityPageHelper.class);
 
         homePage.waitUntilHomePageLoaded();
         homePage.openLoginPage();
@@ -30,6 +34,18 @@ public class CurrentBoardTests extends TestBase {
         boardsPage.openCurrentBoardPage("QAHaifa7");
         qaHaifa7currentBoard.waitUntilPageIsLoaded();
     }
+    @Test
+    public void activityEventIsCorrect(){
+        String cardName="NewCard";
+        qaHaifa7currentBoard.addACard(cardName);
+        qaHaifa7currentBoard.openMemberMenu();
+        qaHaifa7currentBoard.waitUntilPageIsLoaded();
+        menuPage.openActivity();
+        activityPage.waitUntilPageIsLoaded();
+        System.out.println(activityPage.getTitleCardFromEvent());
+        Assert.assertEquals(activityPage.getTitleCardFromEvent(),cardName);
+    }
+
     @Test
     public void isCorrectCurrentBoard(){
         Assert.assertEquals(qaHaifa7currentBoard.getCurrentBoardHeader(),"QAHaifa7",

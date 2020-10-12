@@ -1,5 +1,6 @@
 package Tests;
 import Pages.*;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -9,14 +10,16 @@ public class ProfileAndVisibility extends TestBase{
     LoginPageHelper loginPage;
     BoardsPageHelper boardsPage;
     CurrentBoardPageHelper qaHaifa7currentBoard;
+    MenuPageHelper menuPage;
     ProfileAndVisibilityPageHelper profileAndVisibilityPage;
     @BeforeMethod
     public void initTest() {
-        loginPage= new LoginPageHelper(driver);
-        boardsPage=new BoardsPageHelper(driver);
+        loginPage= PageFactory.initElements(driver,LoginPageHelper.class);
+        boardsPage=PageFactory.initElements(driver,BoardsPageHelper.class);
         qaHaifa7currentBoard = new CurrentBoardPageHelper(driver,"QAHaifa7");
-        homePage =new HomePageHelper(driver);
-        profileAndVisibilityPage=new ProfileAndVisibilityPageHelper(driver);
+        homePage =PageFactory.initElements(driver,HomePageHelper.class);
+        profileAndVisibilityPage=PageFactory.initElements(driver,ProfileAndVisibilityPageHelper.class);
+        menuPage= PageFactory.initElements(driver,MenuPageHelper.class);
 
         homePage.waitUntilHomePageLoaded();
         homePage.openLoginPage();
@@ -26,17 +29,23 @@ public class ProfileAndVisibility extends TestBase{
         //Open QA7Haifa board
         boardsPage.openCurrentBoardPage("QAHaifa7");
         qaHaifa7currentBoard.waitUntilPageIsLoaded();
-        //Open Profile&Visibility Page
+        //open member menu
         qaHaifa7currentBoard.openMemberMenu();
-        qaHaifa7currentBoard.openProfileAndVisibilityPage();
+        menuPage.waitUntilPageIsLoaded();
+        //Open Profile&Visibility Page
+        menuPage.openProfileVisibility();
+        profileAndVisibilityPage.waitUntilPageIsLoaded();
     }
     @Test
     public void isProfileVisibilityPage(){
-        Assert.assertEquals(profileAndVisibilityPage.isProfileAndVisibilityPage(), "Profile and Visibility");
+        Assert.assertEquals(profileAndVisibilityPage.getProfileVisibilityTabName(), "Profile and Visibility");
     }
+
     @Test
     public void userNameVerification(){
-        Assert.assertEquals(profileAndVisibilityPage.getUsernameOfTitleMenuButton(),
-                profileAndVisibilityPage.getUsernameFieldContent(),"Username is not correct");
+        String titleMenu = profileAndVisibilityPage.getTitleMenuIcon();
+        String userNameInTitle = titleMenu.substring(titleMenu.indexOf("(")+1,titleMenu.length()-1);
+        String userName = profileAndVisibilityPage.getUserName();
+        Assert.assertEquals(userNameInTitle, userName);
     }
 }
