@@ -13,14 +13,19 @@ public class BoardsPageHelper extends PageBase{
         super(driver);
         this.driver= driver;
     }
-    public void waitUntilBoardsPageIsLoaded() {
-        waitUntilElementIsClickable(boardsButton,35);
+    public BoardsPageHelper waitUntilPageIsLoaded() {
+        waitUntilElementIsClickable(boardsButton,45);
+        return this;
     }
-    public void openCurrentBoardPage(String boardName) {
+
+    public BoardsPageHelper openCurrentBoardPage(String boardName) {
+        boardsButton.click();
         WebElement board = driver.findElement(By
-                .xpath("//li[@class='boards-page-board-section-list-item'][.//div[@title ='" + boardName+"']]"));
+                .xpath("//li[@class='boards-page-board-section-list-item'][.//div[@title ='"+boardName+"']]"));
         board.click();
+        return this;
     }
+
     public String getBoardsIconName(){
         return boardsButton.getText();
     }

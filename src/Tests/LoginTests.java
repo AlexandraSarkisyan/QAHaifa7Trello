@@ -18,8 +18,8 @@ public class LoginTests extends TestBase {
         loginPage= PageFactory.initElements(driver,LoginPageHelper.class);
         boardsPage= PageFactory.initElements(driver,BoardsPageHelper.class);
         homePage=PageFactory.initElements(driver,HomePageHelper.class);
-        homePage.waitUntilHomePageLoaded();
-        homePage.openLoginPage();
+
+        homePage.waitUntilHomePageLoaded().openLoginPage();
         loginPage.waitUntilLoginPageIsLoaded();
     }
     @Test
@@ -45,7 +45,7 @@ public class LoginTests extends TestBase {
     @Test
     public void LoginPositive (){
         loginPage.loginAsAtlassian(LOGIN,PASSWORD);
-        boardsPage.waitUntilBoardsPageIsLoaded();
+        boardsPage.waitUntilPageIsLoaded();
         Assert.assertTrue(loginPage.getBoardsIconName().equals("Boards"),"The text on the button is not 'Boards'");
 
       }

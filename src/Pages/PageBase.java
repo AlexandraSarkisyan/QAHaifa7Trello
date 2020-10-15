@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 public class PageBase {
     WebDriver driver;
     public PageBase(WebDriver driver){
@@ -40,13 +42,6 @@ public class PageBase {
             e.printStackTrace();
         }
     }
-    /*public void waitUntilElementsAreVisible(WebElement element, int time){
-        try {
-            new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOfAllElements(element));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
     public void waitUntilElementIsVisible(By locator, int time) {
         try {
             new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -68,11 +63,23 @@ public class PageBase {
             e.printStackTrace();
         }
     }
+    public void waitUntilElementsAreVisible(List<WebElement> elementsList, int time) {
+        try {
+            new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOfAllElements(elementsList));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void waitUntilElementIsInVisible(WebElement element, int time) {
         try {
             new WebDriverWait(driver,time).until(ExpectedConditions.invisibilityOf(element));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void editField(WebElement element, String value) {
+        element.click();
+        element.clear();
+        element.sendKeys(value);
     }
 }

@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class CurrentBoardPageHelper extends PageBase {
     @FindBy(css = "a.list-header-extras-menu")
     WebElement listMenuButton;
@@ -15,8 +17,8 @@ public class CurrentBoardPageHelper extends PageBase {
     @FindBy(tagName = "h1")
     WebElement header;
 
-    /*@FindBy(xpath = "//div[@class = 'list js-list-content']")
-    WebElement lists;*/
+    @FindBy(xpath = "//div[@class = 'list js-list-content']")
+    List<WebElement> listElementsList;
 
     @FindBy(css = "a.open-add-list")
     WebElement addListButton;
@@ -46,75 +48,95 @@ public class CurrentBoardPageHelper extends PageBase {
         this.boardName=boardName;
         PageFactory.initElements(driver,this);
     }
-    public void waitUntilPageIsLoaded() {
+    public CurrentBoardPageHelper waitUntilPageIsLoaded() {
         waitUntilElementIsClickable(boardsButton, 10);
         waitUntilElementIsVisible(header, 10);
+        return this;
     }
     public String getCurrentBoardHeader(){
         return header.getText();
     }
-
+    public void initiateAddList() {
+        waitUntilElementIsClickable(addListButton,10);
+        addListButton.click();
+    }
+    public CurrentBoardPageHelper fillTheNameAndSubmit(String name) {
+        waitUntilElementIsClickable(listNameField, 10);
+        editField(listNameField,name);
+        saveNewList();
+        return this;
+    }
     public boolean isCorrectCurrentBoard() {
         return driver.findElement(By.tagName("h1")).getText().equals(this.boardName);
     }
     public int getQuantityLists() {
-        waitUntilElementsAreVisible(By.xpath("//div[@class = 'list js-list-content']"), 15);
-        return driver.findElements(By.xpath("//div[@class = 'list js-list-content']")).size();
+        waitUntilElementsAreVisible(listElementsList, 15);
+        return listElementsList.size();
     }
-    public void addNewListToCurrentBoard(String listName) {
-        waitUntilElementIsClickable(addListButton,10);
-        addListButton.click();
-        waitUntilElementIsClickable(listNameField, 10);
-        listNameField.click();
-        listNameField.clear();
-        listNameField.sendKeys(listName);
-        saveNewList();
-        closeAddingNewList();
+    public CurrentBoardPageHelper addNewListToCurrentBoard() {
+        this.initiateAddList();
+        this.fillTheNameAndSubmit("test");
+        this.closeAddingNewList();
+        return this;
     }
 
-    public void saveNewList() {
+    public CurrentBoardPageHelper saveNewList() {
         waitUntilElementIsClickable(saveNewListButton, 10);
         saveNewListButton.click();
+        return this;
     }
 
-    public void closeAddingNewList() {
-        waitUntilElementIsClickable(closeAddNewListButton, 5);
+    public CurrentBoardPageHelper closeAddingNewList() {
         //close x button
+        waitUntilElementIsClickable(closeAddNewListButton, 5);
         closeAddNewListButton.click();
         waitUntilElementIsInVisible(closeAddNewListButton, 5);
+        return this;
     }
 
-    public void putListToTheArchive() {
+    public CurrentBoardPageHelper putListToTheArchive() {
         waitUntilElementIsClickable(putListToArchiveButton, 10);
         putListToArchiveButton.click();
         waitUntilElementIsInVisible(putListToArchiveButton,10);
+        return this;
     }
 
-    public void openListMenu() {
+    public CurrentBoardPageHelper openListMenu() {
         waitUntilElementIsClickable(listMenuButton,10);
         listMenuButton.click();
+        return this;
     }
 
     public String getTextAddListButton() {
         return addListButton.getText();
     }
 
-    public void openMemberMenu() {
+    public CurrentBoardPageHelper openMemberMenu() {
         waitUntilElementIsClickable(memberMenu,10);
         memberMenu.click();
+        return this;
     }
-    public void addACard(String text){
+    public CurrentBoardPageHelper addACard(String text){
         waitUntilElementIsClickable(addCardButton,10);
         addCardButton.click();
         waitUntilElementIsClickable(cardTitleButton,10);
-        cardTitleButton.click();
-        cardTitleButton.clear();
-        cardTitleButton.sendKeys(text);
-        waitUntilElementIsClickable(submitNewCard,10);
-        submitNewCard.click();
+        editField(cardTitleButton,text);
+        submitNewCard();
+        closeAddingCardXButton();
+        return this;
+    }
+
+    public CurrentBoardPageHelper closeAddingCardXButton() {
         waitUntilElementIsClickable(cancelButton,10);
         cancelButton.click();
         waitUntilElementIsInVisible(cancelButton,10);
+        return this;
+    }
+
+    public CurrentBoardPageHelper submitNewCard() {
+        waitUntilElementIsClickable(submitNewCard,10);
+        submitNewCard.click();
+        return this;
     }
 
 }

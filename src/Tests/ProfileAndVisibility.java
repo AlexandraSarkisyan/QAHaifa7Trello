@@ -21,13 +21,10 @@ public class ProfileAndVisibility extends TestBase{
         profileAndVisibilityPage=PageFactory.initElements(driver,ProfileAndVisibilityPageHelper.class);
         menuPage= PageFactory.initElements(driver,MenuPageHelper.class);
 
-        homePage.waitUntilHomePageLoaded();
-        homePage.openLoginPage();
-        loginPage.waitUntilLoginPageIsLoaded();
-        loginPage.loginAsAtlassian(LOGIN,PASSWORD);
-        boardsPage.waitUntilBoardsPageIsLoaded();
+        homePage.waitUntilHomePageLoaded().openLoginPage();
+        loginPage.waitUntilLoginPageIsLoaded().loginAsAtlassian(LOGIN,PASSWORD);
         //Open QA7Haifa board
-        boardsPage.openCurrentBoardPage("QAHaifa7");
+        boardsPage.waitUntilPageIsLoaded().openCurrentBoardPage("QAHaifa7");
         qaHaifa7currentBoard.waitUntilPageIsLoaded();
         //open member menu
         qaHaifa7currentBoard.openMemberMenu();

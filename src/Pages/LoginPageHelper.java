@@ -1,6 +1,5 @@
 package Pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,45 +25,51 @@ public class LoginPageHelper extends PageBase{
 
     @FindBy(id = "login-submit")
     WebElement loginSubmitButton;
+
+    @FindBy(xpath = "//button[@data-test-id ='header-boards-menu-button']")
+    WebElement boardsButton;
+
     public LoginPageHelper(WebDriver driver){
         super(driver);
         this.driver= driver;
     }
-    public void loginAsAtlassian(String login,String password) {
+    public LoginPageHelper loginAsAtlassian(String login,String password) {
         enterLogin(login);
         submitAsAtlassian();
         enterPasswordAsAtlassian(password);
+        return this;
     }
     public String getBoardsIconName(){
-        return driver.findElement(By.xpath("//button[@data-test-id = 'header-boards-menu-button']")).getText();
+        return boardsButton.getText();
     }
-    public void enterPasswordAsAtlassian(String password) {
-        passwordField.click();
-        passwordField.clear();
-        passwordField.sendKeys(password);
+    public LoginPageHelper enterPasswordAsAtlassian(String password) {
+        editField(passwordField,password);
         waitUntilElementIsClickable(loginSubmitButton,10);
         loginSubmitButton.click();
+        return this;
     }
-    public void loginNotAtlassian(String login,String password) {
+    public LoginPageHelper loginNotAtlassian(String login,String password) {
         //Enter not atl login
         enterLogin(login);
         enterNotAttlassianPassword(password);
         pressLoginButton();
+        return this;
     }
-    public void submitAsAtlassian() {
+    public LoginPageHelper submitAsAtlassian() {
         waitUntilElementIsClickable(loginButtonAtl,10);
         loginButtonAtl.click();
         waitUntilElementIsClickable(passwordField,10);
+        return this;
     }
 
-    public void enterLogin(String login) {
-        loginField.click();
-        loginField.clear();
-        loginField.sendKeys(login);
+    public LoginPageHelper enterLogin(String login) {
+        editField(loginField,login);
+        return this;
     }
 
-    public void waitUntilLoginPageIsLoaded(){
+    public LoginPageHelper waitUntilLoginPageIsLoaded(){
        waitUntilElementIsClickable(loginField,10);
+        return this;
     }
     public String getErrorMessage(){
         waitUntilElementIsVisible(errorMessage, 10);
@@ -75,17 +80,15 @@ public class LoginPageHelper extends PageBase{
         waitUntilElementIsVisible(errorMessageAtl, 10);
         return errorMessageAtl.getText();
     }
-    public void enterNotAttlassianPassword(String password) {
+    public LoginPageHelper enterNotAttlassianPassword(String password) {
         //Enter existent password
-        passwordField.click();
-        passwordField.clear();
-        passwordField.sendKeys(password);
+        editField(passwordField,password);
+        return this;
     }
-
-    public void pressLoginButton() {
-        //Press login button
+    public LoginPageHelper pressLoginButton() {
         waitUntilElementIsClickable(loginButton,10);
         loginButton.click();
+        return this;
     }
 
 }

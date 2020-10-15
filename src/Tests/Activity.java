@@ -24,17 +24,11 @@ public class Activity extends TestBase{
         menuPage= PageFactory.initElements(driver,MenuPageHelper.class);
         activityPage= PageFactory.initElements(driver,ActivityPageHelper.class);
 
-        homePage.waitUntilHomePageLoaded();
-        homePage.openLoginPage();
-        loginPage.waitUntilLoginPageIsLoaded();
-        loginPage.loginAsAtlassian(LOGIN,PASSWORD);
-        boardsPage.waitUntilBoardsPageIsLoaded();
-        //Open QA7Haifa board
-        boardsPage.openCurrentBoardPage("QAHaifa7");
-        qaHaifa7currentBoard.waitUntilPageIsLoaded();
-        qaHaifa7currentBoard.openMemberMenu();
-        qaHaifa7currentBoard.waitUntilPageIsLoaded();
-        menuPage.openActivity();
+        homePage.waitUntilHomePageLoaded().openLoginPage();
+        loginPage.waitUntilLoginPageIsLoaded().loginAsAtlassian(LOGIN,PASSWORD);
+        boardsPage.waitUntilPageIsLoaded().openCurrentBoardPage("QAHaifa7");
+        qaHaifa7currentBoard.waitUntilPageIsLoaded().openMemberMenu();
+        menuPage.waitUntilPageIsLoaded().openActivity();
         activityPage.waitUntilPageIsLoaded();
     }
     @Test
@@ -42,5 +36,15 @@ public class Activity extends TestBase{
         Assert.assertEquals(activityPage.getActivityTabName(), "Activity");
     }
 
+    @Test
+    public void activityEventIsCorrect(){
+        activityPage.backToCurrentBoard();
+        qaHaifa7currentBoard.waitUntilPageIsLoaded();
+        qaHaifa7currentBoard.addACard("NewCard").openMemberMenu().waitUntilPageIsLoaded();
+        menuPage.waitUntilPageIsLoaded().openActivity();
+        activityPage.waitUntilPageIsLoaded();
+        System.out.println(activityPage.getTitleCardFromEvent());
+        Assert.assertEquals(activityPage.getTitleCardFromEvent(),"NewCard");
+    }
 
 }
