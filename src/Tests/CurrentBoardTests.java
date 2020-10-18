@@ -13,7 +13,6 @@ public class CurrentBoardTests extends TestBase {
     BoardsPageHelper boardsPage;
     CurrentBoardPageHelper qaHaifa7currentBoard;
     MenuPageHelper menuPage;
-    ActivityPageHelper activityPage;
 
     @BeforeMethod
     public void initTest() {

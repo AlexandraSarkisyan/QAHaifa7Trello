@@ -41,6 +41,8 @@ public class CurrentBoardPageHelper extends PageBase {
             WebElement submitNewCard;
     @FindBy(xpath = "//a[@class='icon-lg icon-close dark-hover js-cancel']")
             WebElement cancelButton;
+    @FindBy(xpath = "//a[@class ='open-card-composer js-open-card-composer']")
+    List<WebElement> addCardButtonList;
     String boardName;
 
     public CurrentBoardPageHelper(WebDriver driver,String boardName) {
@@ -116,16 +118,15 @@ public class CurrentBoardPageHelper extends PageBase {
         memberMenu.click();
         return this;
     }
-    public CurrentBoardPageHelper addACard(String text){
+    public void addNewCardInFirstList(String title){
         waitUntilElementIsClickable(addCardButton,10);
-        addCardButton.click();
+        addCardButtonList.get(0).click();
         waitUntilElementIsClickable(cardTitleButton,10);
-        editField(cardTitleButton,text);
+        editField(cardTitleButton,title);
         submitNewCard();
         closeAddingCardXButton();
-        return this;
-    }
 
+    }
     public CurrentBoardPageHelper closeAddingCardXButton() {
         waitUntilElementIsClickable(cancelButton,10);
         cancelButton.click();

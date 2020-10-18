@@ -27,9 +27,7 @@ public class Activity extends TestBase{
         homePage.waitUntilHomePageLoaded().openLoginPage();
         loginPage.waitUntilLoginPageIsLoaded().loginAsAtlassian(LOGIN,PASSWORD);
         boardsPage.waitUntilPageIsLoaded().openCurrentBoardPage("QAHaifa7");
-        qaHaifa7currentBoard.waitUntilPageIsLoaded().openMemberMenu();
-        menuPage.waitUntilPageIsLoaded().openActivity();
-        activityPage.waitUntilPageIsLoaded();
+        qaHaifa7currentBoard.waitUntilPageIsLoaded();
     }
     @Test
     public void isActivityPage(){
@@ -38,13 +36,11 @@ public class Activity extends TestBase{
 
     @Test
     public void activityEventIsCorrect(){
-        activityPage.backToCurrentBoard();
-        qaHaifa7currentBoard.waitUntilPageIsLoaded();
-        qaHaifa7currentBoard.addACard("NewCard").openMemberMenu().waitUntilPageIsLoaded();
-        menuPage.waitUntilPageIsLoaded().openActivity();
+        qaHaifa7currentBoard.addNewCardInFirstList("NewCard");
+        qaHaifa7currentBoard.openMemberMenu();
+        menuPage.waitUntilPageIsLoaded();
+        menuPage.openActivityPage();
         activityPage.waitUntilPageIsLoaded();
-        System.out.println(activityPage.getTitleCardFromEvent());
         Assert.assertEquals(activityPage.getTitleCardFromEvent(),"NewCard");
     }
-
 }

@@ -23,7 +23,7 @@ public class MenuPageHelper extends PageBase{
     public void openProfileVisibility() {
         profileVisibilityButton.click();
     }
-    public void openActivity(){
+    public void openActivityPage(){
         waitUntilElementIsClickable(activityButton,20);
         activityButton.click();
     }
